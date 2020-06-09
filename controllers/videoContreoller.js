@@ -1,4 +1,5 @@
 import  {videos} from "../db.js"
+import routes from "../routes.js";
 
 // globals
 export const home = (req, res) => {
@@ -16,11 +17,20 @@ export const search = (req, res) => {
     /* req 의 query 안에 있는 term 을 
     searchingBy 라는 이름으로 가져 오고 싶습니다.*/
 
-    res.render("search", {pageTitle: "Search", searchingBy})
+    res.render("search", {pageTitle: "Search", searchingBy, videos})
 };
 
 // videos
-export const upload = (req, res) => res.render("upload", {pageTitle: "Upload"});
+export const getUpload = (req, res) => {
+    res.render("upload", {pageTitle: "Upload"});
+};
+export const postUpload = (req, res) => {
+    const { 
+        body: {file, title, description}
+    } = req;
+    // To Do: Upload and save video
+    res.redirect(routes.videoDetail(230948))
+};
 
 export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle: "VideoDetail"});
 
