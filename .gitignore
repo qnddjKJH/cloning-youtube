@@ -117,3 +117,5 @@ dist
 .pnp.*
 
 package-lock.json
+.eslintrc.js
+uploads

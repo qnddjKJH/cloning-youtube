@@ -11,11 +11,12 @@ import { localsMiddleware } from "./middlewares";
 
 const app = express();
 
+app.use(helmet());
 app.set("view engine", "pug"); 
+app.use("/uploads", express.static("uploads")); // directory 에서 file 을 보내주는 middleware
 app.use(cookieParser());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(helmet());
 app.use(morgan("dev"));
 
 app.use(localsMiddleware);
