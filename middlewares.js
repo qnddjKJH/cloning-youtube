@@ -8,10 +8,9 @@ const multerVideo = multer({ dest: "uploads/videos/" });
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "WeTube"
     res.locals.routes = routes;
-    res.locals.user = {
-        isAuthenticated: false,
-        id: 1
-    }
+    res.locals.user = req.user || {};
+    // passport 가 login 시 serialize, deserialize 등의 기능을 다 지원
+    // 또한 user 가 담긴 object 요청에도 올려준다
     next();
 };
 
