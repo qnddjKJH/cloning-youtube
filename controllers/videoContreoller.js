@@ -59,11 +59,13 @@ export const postUpload = async (req, res) => {
     fileUrl: path,
     title: title,
     description: description,
+    creator: req.user.id
   });
   // file 을 upload 하고 url 을 반환하는 middleware 가 필요
   // multer 라는 middleware 가 필요하다
   // multer 사용시 해당 form 에 enctype="multer/form-data" 옵션을 넣어줘야한다
-  console.log(newVideo);
+  req.user.videos.push(newVideo.id);
+  req.user.save();
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
@@ -73,7 +75,7 @@ export const videoDetail = async (req, res) => {
   } = req;
 
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("creator");
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
@@ -87,7 +89,11 @@ export const getEditVideo = async (req, res) => {
 
   try {
     const video = await Video.findById(id);
-    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    if(video.creator.toString() !== req.user.id) {
+      throw Error();
+    } else {
+      res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    }
   } catch (error) {
     res.redirect(routes.home);
   }
@@ -111,9 +117,13 @@ export const deleteVideo = async (req, res) => {
   const {
     params: { id },
   } = req;
-
   try {
-    await Video.findByIdAndRemove({ _id: id });
+    const video = await Video.findById(id);
+    if (video.creator.toString() !== req.user.id) {
+      throw Error();
+    } else {
+      await Video.findOneAndRemove({ _id: id});
+    }
   } catch (error) {
     console.log(error);
   }

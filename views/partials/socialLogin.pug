@@ -1,9 +1,6 @@
 .social-login 
     button.social-login__github
-        span
-            i.fab.fa-github
-        |Continue With Github
-    button.social-login__facebook
-        span
-            i.fab.fa-facebook
-        |Continue With facebook
+        a(href=routes.github)
+            span
+                i.fab.fa-github
+            |Continue With Github

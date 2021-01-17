@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const CommnetSchema = new mongoose.Schema({
     text: {
@@ -9,9 +9,9 @@ const CommnetSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    video: {
+    creator: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Video"
+        ref: "User"
     }
 })
 

@@ -1,22 +1,26 @@
 extends layouts/main.pug
-include mixins/videoBlock.pug
+include mixins/videoPlayer
 
 block content
     .video-detail__container
-        .video__player
-            video(src=`/${video.fileUrl}`, controls="true")
+        +videoPlayer({
+            src: video.fileUrl
+        })
         .video__info
-            a(href=routes.editVideo(video.id)) 
-                button Edit Video
+            if loggedUser && video.creator.id === loggedUser.id
+                a(href=routes.editVideo(video.id)) 
+                    button Edit Video
             h5.video__title=video.title
             p.video__description=video.description
             if video.views === 1
                 span.video__views 1 view
             else
                 span.video__views #{video.views} views
+            .video__author
+                |Uploaded by
+                a(href=routes.userDetail(video.creator.id))=video.creator.name
         .video__comments
             if video.comments.lenth ===1
                 span.video__comment-number 1 comment
             else
                 span.video__comment-number #{video.comments.length} comments
-            
