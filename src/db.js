@@ -12,10 +12,10 @@ dotenv.config();
 // 헛수고하는 격
 // 옵션 중 useNewUrlParser, useUnifiedTopology 는 에러를 잡는 건데...
 // 둘 중 하나만 써도 잡히는데 나는 둘다 써야 잡혀서 씀.
-mongoose.connect(process.env.MONGO_URL, {
+mongoose.connect(process.env.MONGO_URL_PROD, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
+  useFindAndModify: false
 });
 
 const db = mongoose.connection;

@@ -1,5 +1,6 @@
 import routes from "../routes.js";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 
 // globals
 // async & await 는 세트다 async 를 쓰면 뒤에 반드시 await 가 붙는다
@@ -52,11 +53,11 @@ export const getUpload = (req, res) => {
 export const postUpload = async (req, res) => {
   const {
     body: { title, description },
-    file: { path },
+    file: { location },
   } = req;
 
   const newVideo = await Video.create({
-    fileUrl: path,
+    fileUrl: location,
     title: title,
     description: description,
     creator: req.user.id
@@ -75,7 +76,9 @@ export const videoDetail = async (req, res) => {
   } = req;
 
   try {
-    const video = await Video.findById(id).populate("creator");
+    const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments");
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
@@ -135,3 +138,42 @@ export const deleteVideo = async (req, res) => {
 
 // render 함수의 첫번째 인자는 템플릿 ( view 파일 )
 // 두번째 인자는 템플릿에 추가할 정보가 담긴 객체이다.
+
+// Register View API
+export const postRegisterView = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    video.views += 1;
+    video.save();
+    res.status(200);
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+}
+
+export const postAddComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { comment },
+    user
+  } = req;
+
+  try {
+    const video = await Video.findById(id);
+    const newComment = await Comment.create({
+      text: comment,
+      creator: user.id
+    });
+    video.comments.push(newComment._id);
+    video.save();
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+}

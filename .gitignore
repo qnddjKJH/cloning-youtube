@@ -120,3 +120,4 @@ package-lock.json
 .eslintrc.js
 uploads
 static
+dist
