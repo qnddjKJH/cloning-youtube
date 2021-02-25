@@ -47,9 +47,9 @@
     "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
     "build:server": "babel src --out-dir dist --ignore 'src/assets' --ignore 'src/static' --ignore 'src/webpack.config.js'",
     "build:assets": "cd src && cross-env WEBPACK_ENV=production webpack",
-    "copyAll": "cp -R src/static build && cp -R src/views build",
+    "copyAll": "cp -R src/static dist && cp -R src/views dist",
     "build": "npm run build:server && npm run build:assets && npm run copyAll ",
-    "prebuild": "rm -rf build",
+    "prebuild": "rm -rf dist",
     "tunnel": "lt --port 4000",
     "start": "PRODUCTION=true node dist/init.js",
     "prestart": "npm run build"
