@@ -45,7 +45,7 @@
     "dev:server": "nodemon --exec babel-node src/init.js --delay 2 --ignore '.scss' --ignore 'static' ",
     "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
     "build:server": "babel src --out-dir dist --ignore 'src/assets' --ignore 'src/static' --ignore 'src/webpack.config.js'",
-    "build:assets": "cd src && WEBPACK_ENV=production webpack",
+    "build:assets": "cd src && cross-env WEBPACK_ENV=production webpack",
     "copyAll": "cp -R src/static build && cp -R src/views build",
     "build": "npm run build:server && npm run build:assets && npm run copyAll ",
     "prebuild": "rm -rf build",
