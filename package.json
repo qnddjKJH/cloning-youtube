@@ -48,7 +48,7 @@
     "copyAll": "xcopy src\\static dist\\static /d /e /h /c /y /i && xcopy src\\views dist\\views /d /e /h /c /y /i",
     "build": "npm run build:server && npm run build:assets && npm run copyAll ",
     "prebuild": "rd /s /q \"dist\"",
-    "start": "node dist/init.js",
+    "start": "PRODUCTION=true node dist/init.js",
     "prestart": "npm run build"
   },
   "devDependencies": {
